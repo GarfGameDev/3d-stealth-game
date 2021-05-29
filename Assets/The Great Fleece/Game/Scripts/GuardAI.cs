@@ -6,6 +6,8 @@ using UnityEngine.AI;
 public class GuardAI : MonoBehaviour
 {
     public List<Transform> wayPoints;
+    public bool coinThrown;
+    public Vector3 coinPos;
 
     private int _currentTarget;
     private NavMeshAgent _agent;
@@ -13,6 +15,8 @@ public class GuardAI : MonoBehaviour
     private bool _targetReached = false;
 
     private Animator _anim;
+
+    
 
     void Start()
     {
@@ -24,7 +28,7 @@ public class GuardAI : MonoBehaviour
 
     void Update()
     {
-        if (wayPoints.Count > 0 && wayPoints[_currentTarget] != null)
+        if (wayPoints.Count > 0 && wayPoints[_currentTarget] != null && coinThrown == false)
         {
             _agent.SetDestination(wayPoints[_currentTarget].position);
             
@@ -86,6 +90,16 @@ public class GuardAI : MonoBehaviour
             }
 
 
+        }
+
+        else 
+        {
+            float distance = Vector3.Distance(transform.position, coinPos);
+
+            if (distance < 4f)
+            {
+                _anim.SetBool("Walking", false);
+            }
         }
 
     }
